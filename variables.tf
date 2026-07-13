@@ -32,3 +32,9 @@ variable "database_port" {
   type        = number
   default     = 5432
 }
+
+variable "flow_log_retention_days" {
+  description = "Number of days to retain VPC Flow Logs in CloudWatch"
+  type        = number
+  default     = 30
+}

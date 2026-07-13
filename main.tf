@@ -1,3 +1,7 @@
+data "aws_caller_identity" "current" {}
+
+data "aws_region" "current" {}
+
 module "networking" {
   source = "./modules/networking"
 
@@ -28,4 +32,14 @@ module "nacls" {
   private_db_subnet_cidrs  = module.networking.private_db_subnet_cidrs
   application_port         = var.application_port
   database_port            = var.database_port
+}
+
+module "flow_logs" {
+  source = "./modules/flow-logs"
+
+  vpc_id             = module.networking.vpc_id
+  environment        = var.environment
+  aws_region         = data.aws_region.current.region
+  aws_account_id     = data.aws_caller_identity.current.account_id
+  log_retention_days = var.flow_log_retention_days
 }

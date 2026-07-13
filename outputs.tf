@@ -82,3 +82,38 @@ output "database_security_group_id" {
   description = "ID of the private database security group"
   value       = module.security.database_security_group_id
 }
+
+output "public_network_acl_id" {
+  description = "ID of the public Network ACL"
+  value       = module.nacls.public_network_acl_id
+}
+
+output "private_app_network_acl_id" {
+  description = "ID of the private application Network ACL"
+  value       = module.nacls.private_app_network_acl_id
+}
+
+output "private_db_network_acl_id" {
+  description = "ID of the private database Network ACL"
+  value       = module.nacls.private_db_network_acl_id
+}
+
+output "vpc_flow_log_id" {
+  description = "ID of the VPC Flow Log"
+  value       = module.flow_logs.flow_log_id
+}
+
+output "vpc_flow_log_group_name" {
+  description = "CloudWatch log-group name for VPC Flow Logs"
+  value       = module.flow_logs.cloudwatch_log_group_name
+}
+
+output "vpc_flow_log_group_arn" {
+  description = "CloudWatch log-group ARN for VPC Flow Logs"
+  value       = module.flow_logs.cloudwatch_log_group_arn
+}
+
+output "vpc_flow_logs_role_arn" {
+  description = "IAM role ARN used to publish VPC Flow Logs"
+  value       = module.flow_logs.flow_logs_role_arn
+}
