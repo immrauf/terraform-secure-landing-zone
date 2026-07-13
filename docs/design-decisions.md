@@ -95,3 +95,43 @@ An Amazon RDS DB subnet group was created using both database subnets.
 - Improves resilience by distributing database subnet capacity across two Availability Zones.
 - Creates a repeatable and auditable database-network foundation.
 - Reduces configuration errors associated with manually selecting database subnets.
+
+## Layered security-group architecture
+
+### Business requirement
+
+Internet-facing, application, and database workloads must be separated so that compromise of one layer does not automatically provide unrestricted access to the remaining environment.
+
+### Decision
+
+Three security groups were created:
+
+- Public load-balancer security group
+- Private application security group
+- Private database security group
+
+The permitted traffic flow is:
+
+1. The internet may reach the load-balancer tier only on TCP port 443.
+2. The load-balancer tier may reach the application tier only on TCP port 8080.
+3. The application tier may reach the PostgreSQL database tier only on TCP port 5432.
+4. The application tier may initiate outbound HTTPS connections for updates and approved external services.
+5. The database security group has no broad outbound rule.
+
+Security-group references are used between tiers instead of broad VPC or subnet CIDR rules.
+
+### Security value
+
+- Prevents direct internet access to application and database workloads.
+- Restricts lateral movement between architecture tiers.
+- Prevents public exposure of the application and database ports.
+- Provides stateful, resource-level network controls.
+- Uses explicit security-group identity instead of broad network ranges.
+- Avoids opening SSH or RDP access from the internet.
+
+### Business value
+
+- Creates a reusable least-privilege network-access pattern.
+- Reduces the risk of accidental public exposure.
+- Makes approved traffic paths auditable through Terraform.
+- Supports future deployment of an Application Load Balancer, private compute resources, and Amazon RDS.

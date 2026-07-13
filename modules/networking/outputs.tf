@@ -70,3 +70,42 @@ output "db_subnet_group_arn" {
   description = "ARN of the RDS database subnet group"
   value       = aws_db_subnet_group.main.arn
 }
+
+output "public_subnet_id_map" {
+  description = "Map of public subnet names to IDs"
+  value = {
+    for name, subnet in aws_subnet.public :
+    name => subnet.id
+  }
+}
+
+output "private_app_subnet_id_map" {
+  description = "Map of private application subnet names to IDs"
+  value = {
+    for name, subnet in aws_subnet.private_app :
+    name => subnet.id
+  }
+}
+
+output "private_db_subnet_id_map" {
+  description = "Map of private database subnet names to IDs"
+  value = {
+    for name, subnet in aws_subnet.private_db :
+    name => subnet.id
+  }
+}
+
+output "public_subnet_cidrs" {
+  description = "CIDR blocks assigned to public subnets"
+  value       = values(local.public_subnets)[*].cidr
+}
+
+output "private_app_subnet_cidrs" {
+  description = "CIDR blocks assigned to private application subnets"
+  value       = values(local.private_app_subnets)[*].cidr
+}
+
+output "private_db_subnet_cidrs" {
+  description = "CIDR blocks assigned to private database subnets"
+  value       = values(local.private_db_subnets)[*].cidr
+}

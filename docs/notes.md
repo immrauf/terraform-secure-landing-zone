@@ -32,3 +32,18 @@ I successfully deployed the first AWS resource in the secure landing zone.
 - Terraform state records which AWS resources Terraform manages.
 - Terraform outputs expose important resource information such as the VPC ID.
 - AWS resources should be verified through both Terraform and AWS.
+
+## Security-group milestone
+
+I created a reusable Terraform security module containing separate security groups for the load-balancer, application, and database tiers.
+
+### Traffic paths
+
+- Internet to load balancer: HTTPS 443
+- Load balancer to application: TCP 8080
+- Application to database: PostgreSQL 5432
+- Application outbound: HTTPS 443
+
+### Key lesson
+
+Security groups are stateful and operate at the resource level. Referencing another security group provides a more targeted access rule than allowing an entire subnet or VPC CIDR range.
