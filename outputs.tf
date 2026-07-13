@@ -67,3 +67,18 @@ output "db_subnet_group_arn" {
   description = "ARN of the RDS database subnet group"
   value       = module.networking.db_subnet_group_arn
 }
+
+output "load_balancer_security_group_id" {
+  description = "ID of the public load-balancer security group"
+  value       = module.security.load_balancer_security_group_id
+}
+
+output "application_security_group_id" {
+  description = "ID of the private application security group"
+  value       = module.security.application_security_group_id
+}
+
+output "database_security_group_id" {
+  description = "ID of the private database security group"
+  value       = module.security.database_security_group_id
+}
