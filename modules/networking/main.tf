@@ -36,6 +36,17 @@ locals {
       az   = data.aws_availability_zones.available.names[1]
     }
   }
+  private_db_subnets = {
+    private_db_a = {
+      cidr = "10.0.21.0/24"
+      az   = data.aws_availability_zones.available.names[0]
+    }
+
+    private_db_b = {
+      cidr = "10.0.22.0/24"
+      az   = data.aws_availability_zones.available.names[1]
+    }
+  }
 }
 
 resource "aws_subnet" "public" {
@@ -137,4 +148,45 @@ resource "aws_route_table_association" "private_app" {
 
   subnet_id      = each.value.id
   route_table_id = aws_route_table.private_app.id
+}
+
+resource "aws_subnet" "private_db" {
+  for_each = local.private_db_subnets
+
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = each.value.cidr
+  availability_zone       = each.value.az
+  map_public_ip_on_launch = false
+
+  tags = {
+    Name = "secure-landing-zone-${var.environment}-${each.key}"
+    Tier = "private-db"
+  }
+}
+
+resource "aws_route_table" "private_db" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "secure-landing-zone-${var.environment}-private-db-rt"
+    Tier = "private-db"
+  }
+}
+
+resource "aws_route_table_association" "private_db" {
+  for_each = aws_subnet.private_db
+
+  subnet_id      = each.value.id
+  route_table_id = aws_route_table.private_db.id
+}
+
+resource "aws_db_subnet_group" "main" {
+  name = "secure-landing-zone-${var.environment}-db-subnet-group"
+
+  subnet_ids = values(aws_subnet.private_db)[*].id
+
+  tags = {
+    Name = "secure-landing-zone-${var.environment}-db-subnet-group"
+    Tier = "private-db"
+  }
 }

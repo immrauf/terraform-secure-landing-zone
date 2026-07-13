@@ -47,3 +47,23 @@ output "private_app_route_table_id" {
   description = "ID of the private application route table"
   value       = module.networking.private_app_route_table_id
 }
+
+output "private_db_subnet_ids" {
+  description = "IDs of the isolated private database subnets"
+  value       = module.networking.private_db_subnet_ids
+}
+
+output "private_db_route_table_id" {
+  description = "ID of the isolated private database route table"
+  value       = module.networking.private_db_route_table_id
+}
+
+output "db_subnet_group_name" {
+  description = "Name of the RDS database subnet group"
+  value       = module.networking.db_subnet_group_name
+}
+
+output "db_subnet_group_arn" {
+  description = "ARN of the RDS database subnet group"
+  value       = module.networking.db_subnet_group_arn
+}

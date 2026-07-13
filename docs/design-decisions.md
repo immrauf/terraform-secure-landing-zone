@@ -60,3 +60,38 @@ A single NAT Gateway is used in the development environment to control portfolio
 A single NAT Gateway reduces development cost but creates an Availability Zone dependency. A production environment would normally evaluate deploying one NAT Gateway per Availability Zone.
 
 NAT Gateway hourly and data-processing charges must be considered when selecting the production architecture.
+
+## Isolated private database tier
+
+### Business requirement
+
+Sensitive database workloads must not be directly accessible from the internet and should not have unnecessary outbound internet connectivity.
+
+The design must also support future highly available Amazon RDS deployments.
+
+### Decision
+
+Two private database subnets were deployed across two Availability Zones:
+
+- `10.0.21.0/24`
+- `10.0.22.0/24`
+
+Automatic public IPv4 assignment is disabled.
+
+A dedicated database route table was created with no default route to either the Internet Gateway or NAT Gateway. Only the VPC-local route is present.
+
+An Amazon RDS DB subnet group was created using both database subnets.
+
+### Security value
+
+- Prevents direct internet routing for database workloads.
+- Reduces the attack surface of the data tier.
+- Separates application and database routing policies.
+- Supports future database security-group rules that permit access only from the application tier.
+- Provides a foundation for Multi-AZ RDS deployment.
+
+### Business value
+
+- Improves resilience by distributing database subnet capacity across two Availability Zones.
+- Creates a repeatable and auditable database-network foundation.
+- Reduces configuration errors associated with manually selecting database subnets.
