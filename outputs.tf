@@ -32,3 +32,18 @@ output "public_route_table_id" {
   description = "ID of the public route table"
   value       = module.networking.public_route_table_id
 }
+
+output "nat_gateway_id" {
+  description = "ID of the landing zone NAT Gateway"
+  value       = module.networking.nat_gateway_id
+}
+
+output "nat_gateway_public_ip" {
+  description = "Public IP address assigned to the NAT Gateway"
+  value       = module.networking.nat_gateway_public_ip
+}
+
+output "private_app_route_table_id" {
+  description = "ID of the private application route table"
+  value       = module.networking.private_app_route_table_id
+}
