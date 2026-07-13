@@ -52,3 +52,8 @@ variable "log_retention_days" {
     error_message = "The retention period must be supported by CloudWatch Logs."
   }
 }
+
+variable "kms_key_arn" {
+  description = "ARN of the KMS key used to encrypt VPC Flow Logs"
+  type        = string
+}

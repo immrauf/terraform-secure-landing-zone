@@ -137,3 +137,18 @@ output "cloudtrail_cloudwatch_role_arn" {
   description = "IAM role used by CloudTrail for CloudWatch delivery"
   value       = module.cloudtrail.cloudwatch_role_arn
 }
+
+output "security_logs_kms_key_id" {
+  description = "ID of the customer-managed KMS key for security logs"
+  value       = module.kms.key_id
+}
+
+output "security_logs_kms_key_arn" {
+  description = "ARN of the customer-managed KMS key for security logs"
+  value       = module.kms.key_arn
+}
+
+output "security_logs_kms_alias" {
+  description = "Alias of the customer-managed KMS key for security logs"
+  value       = module.kms.alias_name
+}

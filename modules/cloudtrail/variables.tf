@@ -29,3 +29,8 @@ variable "s3_log_retention_days" {
     error_message = "CloudTrail S3 logs must be retained for at least 90 days."
   }
 }
+
+variable "kms_key_arn" {
+  description = "ARN of the KMS key used to encrypt CloudTrail logs"
+  type        = string
+}

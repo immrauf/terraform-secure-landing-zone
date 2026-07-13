@@ -1,6 +1,7 @@
 resource "aws_cloudwatch_log_group" "vpc_flow_logs" {
   name              = "/aws/vpc/secure-landing-zone-${var.environment}-flow-logs"
   retention_in_days = var.log_retention_days
+  kms_key_id        = var.kms_key_arn
 
   tags = {
     Name    = "secure-landing-zone-${var.environment}-vpc-flow-logs"

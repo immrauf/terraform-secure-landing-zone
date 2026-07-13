@@ -49,10 +49,11 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "cloudtrail" {
 
   rule {
     apply_server_side_encryption_by_default {
-      sse_algorithm = "AES256"
+      sse_algorithm     = "aws:kms"
+      kms_master_key_id = var.kms_key_arn
     }
 
-    bucket_key_enabled = false
+    bucket_key_enabled = true
   }
 }
 
@@ -182,6 +183,7 @@ resource "aws_s3_bucket_policy" "cloudtrail" {
 resource "aws_cloudwatch_log_group" "cloudtrail" {
   name              = local.cloudwatch_log_group_name
   retention_in_days = var.cloudwatch_retention_days
+  kms_key_id        = var.kms_key_arn
 
   tags = {
     Name      = "secure-landing-zone-${var.environment}-cloudtrail-logs"
@@ -248,7 +250,8 @@ resource "aws_iam_role_policy_attachment" "cloudtrail_cloudwatch" {
 }
 
 resource "aws_cloudtrail" "main" {
-  name = local.trail_name
+  name       = local.trail_name
+  kms_key_id = var.kms_key_arn
 
   s3_bucket_name = aws_s3_bucket.cloudtrail.id
 

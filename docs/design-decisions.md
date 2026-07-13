@@ -201,3 +201,91 @@ The IAM trust policy restricts role assumption using the AWS account ID and VPC 
 ### Encryption
 
 CloudWatch Logs encrypts log data at rest by default. A customer-managed AWS KMS key will be added during the dedicated encryption phase for greater administrative control.
+
+## Centralized AWS API audit logging
+
+### Business requirement
+
+The organization needs a durable and searchable audit record of actions performed through the AWS Console, CLI, SDKs, APIs, IAM identities, and AWS services.
+
+### Decision
+
+A multi-Region CloudTrail trail was enabled to record read and write management events, including global AWS service events.
+
+CloudTrail delivers records to:
+
+- A dedicated private Amazon S3 bucket for durable retention
+- A CloudWatch Logs log group for searches, monitoring, metric filters, and alerts
+
+The S3 bucket uses:
+
+- Public-access blocking
+- Bucket-owner-enforced object ownership
+- Versioning
+- Default server-side encryption
+- TLS-only access enforcement
+- Lifecycle-based retention
+
+CloudTrail log-file validation is enabled to support integrity verification.
+
+A dedicated IAM role and least-privilege policy permit CloudTrail to publish events only to the designated CloudWatch log group.
+
+### Security value
+
+- Records administrative and API activity across enabled AWS Regions.
+- Supports incident investigations and forensic review.
+- Helps identify unauthorized or unexpected configuration changes.
+- Provides digitally signed digest files for integrity checking.
+- Prevents public access to retained audit logs.
+- Creates the foundation for CloudWatch alarms on sensitive activity.
+
+### Business value
+
+- Improves accountability for cloud changes.
+- Supports governance and compliance evidence collection.
+- Reduces investigation time by centralizing account activity.
+- Creates searchable near-real-time records and durable long-term archives.
+
+### Future improvement
+
+The S3 bucket and CloudWatch log group currently use AWS-managed encryption. A customer-managed KMS key will be introduced during the encryption phase.
+
+## Customer-managed encryption for security logs
+
+### Business requirement
+
+Security and audit logs require controlled encryption at rest, auditable key usage, and centralized management of cryptographic permissions.
+
+### Decision
+
+A customer-managed symmetric AWS KMS key was created for security-log encryption.
+
+The key protects:
+
+- CloudTrail log files delivered to Amazon S3
+- CloudTrail events delivered to CloudWatch Logs
+- VPC Flow Logs delivered to CloudWatch Logs
+
+Automatic key rotation is enabled. The key has a 30-day deletion window and a descriptive alias.
+
+The KMS key policy:
+
+- Grants key administration to the owning AWS account.
+- Permits CloudTrail to generate data keys only for the designated trail.
+- Restricts CloudTrail through the trail ARN and encryption context.
+- Permits the regional CloudWatch Logs service to encrypt and decrypt log data.
+- Restricts CloudWatch Logs through log-group encryption context.
+
+### Security value
+
+- Provides centralized control over security-log encryption.
+- Produces CloudTrail records for KMS administrative and cryptographic operations.
+- Restricts AWS service use of the key through service principals and encryption context.
+- Enables key rotation without rebuilding the protected logging resources.
+- Reduces reliance on service-managed encryption keys.
+
+### Operational consideration
+
+The KMS key must remain enabled and accessible for as long as encrypted logs are retained. Disabling or deleting the key can make historical log data unreadable.
+
+Customer-managed KMS keys and cryptographic requests may incur AWS charges.
