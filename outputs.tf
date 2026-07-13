@@ -152,3 +152,23 @@ output "security_logs_kms_alias" {
   description = "Alias of the customer-managed KMS key for security logs"
   value       = module.kms.alias_name
 }
+
+output "guardduty_detector_id" {
+  description = "ID of the GuardDuty detector"
+  value       = module.guardduty.detector_id
+}
+
+output "guardduty_detector_arn" {
+  description = "ARN of the GuardDuty detector"
+  value       = module.guardduty.detector_arn
+}
+
+output "guardduty_s3_protection_status" {
+  description = "Status of GuardDuty S3 Protection"
+  value       = module.guardduty.s3_protection_status
+}
+
+output "guardduty_rds_protection_status" {
+  description = "Status of GuardDuty RDS Protection"
+  value       = module.guardduty.rds_protection_status
+}

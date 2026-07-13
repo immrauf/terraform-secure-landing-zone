@@ -50,3 +50,21 @@ variable "cloudtrail_s3_retention_days" {
   type        = number
   default     = 365
 }
+
+variable "guardduty_finding_publishing_frequency" {
+  description = "Frequency for publishing updates to GuardDuty findings"
+  type        = string
+  default     = "FIFTEEN_MINUTES"
+}
+
+variable "enable_guardduty_s3_protection" {
+  description = "Whether GuardDuty S3 Protection is enabled"
+  type        = bool
+  default     = true
+}
+
+variable "enable_guardduty_rds_protection" {
+  description = "Whether GuardDuty RDS Protection is enabled"
+  type        = bool
+  default     = true
+}

@@ -64,3 +64,12 @@ module "cloudtrail" {
   cloudwatch_retention_days = var.cloudtrail_cloudwatch_retention_days
   s3_log_retention_days     = var.cloudtrail_s3_retention_days
 }
+
+module "guardduty" {
+  source = "./modules/guardduty"
+
+  environment                  = var.environment
+  finding_publishing_frequency = var.guardduty_finding_publishing_frequency
+  enable_s3_protection         = var.enable_guardduty_s3_protection
+  enable_rds_protection        = var.enable_guardduty_rds_protection
+}
