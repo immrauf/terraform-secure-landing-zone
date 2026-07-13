@@ -43,3 +43,13 @@ module "flow_logs" {
   aws_account_id     = data.aws_caller_identity.current.account_id
   log_retention_days = var.flow_log_retention_days
 }
+
+module "cloudtrail" {
+  source = "./modules/cloudtrail"
+
+  environment               = var.environment
+  aws_account_id            = data.aws_caller_identity.current.account_id
+  aws_region                = data.aws_region.current.region
+  cloudwatch_retention_days = var.cloudtrail_cloudwatch_retention_days
+  s3_log_retention_days     = var.cloudtrail_s3_retention_days
+}

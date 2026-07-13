@@ -135,3 +135,69 @@ Security-group references are used between tiers instead of broad VPC or subnet 
 - Reduces the risk of accidental public exposure.
 - Makes approved traffic paths auditable through Terraform.
 - Supports future deployment of an Application Load Balancer, private compute resources, and Amazon RDS.
+
+## Subnet-level Network ACL guardrails
+
+### Business requirement
+
+The landing zone needs an additional subnet-level control that can provide coarse traffic filtering and explicit deny-by-default behavior.
+
+### Decision
+
+Separate custom Network ACLs were created for:
+
+- Public subnets
+- Private application subnets
+- Private database subnets
+
+Security groups remain the primary resource-level traffic control. Network ACLs provide an additional stateless subnet-level guardrail.
+
+The public tier permits HTTPS and required ephemeral return traffic. The application tier permits traffic from the public tier on the application port, outbound HTTPS, database access, and necessary return traffic. The database tier permits PostgreSQL traffic only from the application subnet ranges and response traffic back to application clients.
+
+### Security value
+
+- Adds subnet-level defense in depth.
+- Prevents database subnets from receiving general internet access.
+- Separates traffic policies by architecture tier.
+- Provides explicit allow rules and implicit denial of unmatched traffic.
+- Demonstrates the distinction between stateful security groups and stateless Network ACLs.
+
+### Operational consideration
+
+Network ACL rules require explicit inbound and outbound return paths. Incorrect ephemeral-port rules can interrupt valid application, database, load-balancer, or NAT Gateway traffic.
+
+## VPC network-traffic logging
+
+### Business requirement
+
+Security and operations teams need visibility into network activity for troubleshooting, incident investigation, auditing, and detection of potentially unauthorized traffic.
+
+### Decision
+
+VPC Flow Logs were enabled at the VPC level and configured to capture both accepted and rejected traffic.
+
+Flow-log records are delivered to a dedicated Amazon CloudWatch Logs log group with a 30-day retention period.
+
+A dedicated IAM role and least-privilege permissions policy allow the VPC Flow Logs service to create log streams and publish log events only to the designated log group.
+
+The IAM trust policy restricts role assumption using the AWS account ID and VPC Flow Log source ARN pattern.
+
+### Security value
+
+- Captures accepted and rejected network-traffic metadata.
+- Supports investigation of blocked connections.
+- Helps validate security-group and Network ACL behavior.
+- Provides visibility into source addresses, destination addresses, ports, protocols, and traffic outcomes.
+- Establishes a central location for future metric filters and alarms.
+- Uses a dedicated service role rather than broad shared permissions.
+
+### Business value
+
+- Reduces time required to diagnose network-connectivity problems.
+- Improves auditability of cloud-network activity.
+- Supports incident-response investigations.
+- Automatically removes older development logs after 30 days to control storage cost.
+
+### Encryption
+
+CloudWatch Logs encrypts log data at rest by default. A customer-managed AWS KMS key will be added during the dedicated encryption phase for greater administrative control.

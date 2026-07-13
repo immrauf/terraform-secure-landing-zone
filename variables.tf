@@ -38,3 +38,15 @@ variable "flow_log_retention_days" {
   type        = number
   default     = 30
 }
+
+variable "cloudtrail_cloudwatch_retention_days" {
+  description = "Number of days to retain CloudTrail events in CloudWatch"
+  type        = number
+  default     = 30
+}
+
+variable "cloudtrail_s3_retention_days" {
+  description = "Number of days to retain CloudTrail log files in S3"
+  type        = number
+  default     = 365
+}

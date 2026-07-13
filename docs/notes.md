@@ -47,3 +47,23 @@ I created a reusable Terraform security module containing separate security grou
 ### Key lesson
 
 Security groups are stateful and operate at the resource level. Referencing another security group provides a more targeted access rule than allowing an entire subnet or VPC CIDR range.
+
+## VPC Flow Logs milestone
+
+I enabled VPC-level network-traffic logging using Terraform.
+
+### Components created
+
+- CloudWatch Logs log group
+- Dedicated IAM service role
+- Least-privilege CloudWatch Logs publishing policy
+- VPC Flow Log capturing accepted and rejected traffic
+- Thirty-day log retention
+
+### Key lessons
+
+- VPC Flow Logs record traffic metadata rather than packet contents.
+- A service role allows VPC Flow Logs to publish records to CloudWatch.
+- ACCEPT records show permitted traffic.
+- REJECT records can help identify blocked or suspicious traffic.
+- Flow-log delivery can take time, and traffic must occur before records appear.

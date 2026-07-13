@@ -117,3 +117,23 @@ output "vpc_flow_logs_role_arn" {
   description = "IAM role ARN used to publish VPC Flow Logs"
   value       = module.flow_logs.flow_logs_role_arn
 }
+
+output "cloudtrail_arn" {
+  description = "ARN of the multi-Region CloudTrail trail"
+  value       = module.cloudtrail.trail_arn
+}
+
+output "cloudtrail_s3_bucket_name" {
+  description = "Name of the S3 bucket containing CloudTrail logs"
+  value       = module.cloudtrail.s3_bucket_name
+}
+
+output "cloudtrail_cloudwatch_log_group_name" {
+  description = "CloudWatch log group receiving CloudTrail events"
+  value       = module.cloudtrail.cloudwatch_log_group_name
+}
+
+output "cloudtrail_cloudwatch_role_arn" {
+  description = "IAM role used by CloudTrail for CloudWatch delivery"
+  value       = module.cloudtrail.cloudwatch_role_arn
+}
