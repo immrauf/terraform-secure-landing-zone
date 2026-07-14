@@ -73,3 +73,16 @@ module "guardduty" {
   enable_s3_protection         = var.enable_guardduty_s3_protection
   enable_rds_protection        = var.enable_guardduty_rds_protection
 }
+
+module "security_hub" {
+  source = "./modules/security-hub"
+
+  environment          = var.environment
+  aws_region           = data.aws_region.current.region
+  enable_fsbp_standard = var.enable_security_hub_fsbp
+  enable_cis_standard  = var.enable_security_hub_cis
+
+  depends_on = [
+    module.guardduty
+  ]
+}

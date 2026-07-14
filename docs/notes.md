@@ -67,3 +67,57 @@ I enabled VPC-level network-traffic logging using Terraform.
 - ACCEPT records show permitted traffic.
 - REJECT records can help identify blocked or suspicious traffic.
 - Flow-log delivery can take time, and traffic must occur before records appear.
+
+## KMS encryption milestone
+
+I created a customer-managed AWS KMS key and connected it to the landing zone's security logging services.
+
+### Resources protected
+
+- CloudTrail S3 bucket
+- CloudTrail CloudWatch log group
+- VPC Flow Logs CloudWatch log group
+
+### Key lessons
+
+- A KMS key policy controls which identities and AWS services may use a key.
+- CloudTrail requires permission to generate data keys for log encryption.
+- CloudWatch Logs requires encryption and decryption permissions.
+- Encryption-context conditions reduce the risk of the key being used by unintended resources.
+- Historical encrypted data continues to depend on the KMS key.
+
+## GuardDuty milestone
+
+I enabled Amazon GuardDuty using a reusable Terraform module.
+
+### Features enabled
+
+- Core GuardDuty detector
+- S3 Protection
+- RDS Protection
+- Fifteen-minute finding update publishing
+
+### Key lessons
+
+- GuardDuty is enabled per AWS account and Region.
+- A Region can have only one GuardDuty detector for an account.
+- GuardDuty creates findings but does not automatically remediate every threat.
+- Sample findings can safely test alerting workflows.
+- Additional protection features should be enabled when relevant workloads exist.
+
+## Security Hub milestone
+
+I enabled AWS Security Hub CSPM and explicitly subscribed to two security standards.
+
+### Standards enabled
+
+- AWS Foundational Security Best Practices v1.0.0
+- CIS AWS Foundations Benchmark v5.0.0
+
+### Key lessons
+
+- Security Hub centralizes findings and security-control results.
+- Security standards consist of multiple security controls.
+- Security scores require time and completed control evaluations.
+- Many controls depend on AWS Config.
+- Terraform can explicitly manage standards and versions instead of relying on default subscriptions.

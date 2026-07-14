@@ -68,3 +68,15 @@ variable "enable_guardduty_rds_protection" {
   type        = bool
   default     = true
 }
+
+variable "enable_security_hub_fsbp" {
+  description = "Whether to enable AWS Foundational Security Best Practices"
+  type        = bool
+  default     = true
+}
+
+variable "enable_security_hub_cis" {
+  description = "Whether to enable the CIS AWS Foundations Benchmark"
+  type        = bool
+  default     = true
+}

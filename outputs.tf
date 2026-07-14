@@ -172,3 +172,18 @@ output "guardduty_rds_protection_status" {
   description = "Status of GuardDuty RDS Protection"
   value       = module.guardduty.rds_protection_status
 }
+
+output "security_hub_arn" {
+  description = "ARN of the Security Hub CSPM subscription"
+  value       = module.security_hub.security_hub_arn
+}
+
+output "security_hub_fsbp_subscription_arn" {
+  description = "Subscription ARN for AWS Foundational Security Best Practices"
+  value       = module.security_hub.fsbp_subscription_arn
+}
+
+output "security_hub_cis_subscription_arn" {
+  description = "Subscription ARN for the CIS AWS Foundations Benchmark"
+  value       = module.security_hub.cis_subscription_arn
+}

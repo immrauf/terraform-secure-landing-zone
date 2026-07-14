@@ -289,3 +289,81 @@ The KMS key policy:
 The KMS key must remain enabled and accessible for as long as encrypted logs are retained. Disabling or deleting the key can make historical log data unreadable.
 
 Customer-managed KMS keys and cryptographic requests may incur AWS charges.
+
+## Managed threat detection with Amazon GuardDuty
+
+### Business requirement
+
+The organization needs continuous detection of suspicious account activity, compromised credentials, malicious network behavior, and anomalous access to supported AWS data services.
+
+### Decision
+
+Amazon GuardDuty was enabled in the landing-zone Region through Terraform.
+
+The following protection capabilities are explicitly enabled:
+
+- S3 data-event monitoring
+- RDS login-event monitoring
+
+GuardDuty finding updates are published at fifteen-minute intervals.
+
+Runtime Monitoring and Malware Protection for EC2 are not enabled yet because the landing zone does not currently contain EC2, ECS, or EKS workloads. These capabilities will be evaluated when compute resources are introduced.
+
+### Security value
+
+- Provides managed detection of suspicious AWS activity.
+- Uses AWS threat intelligence and behavioral analysis.
+- Adds visibility into supported S3 access and RDS login activity.
+- Produces centralized findings for investigation and future automation.
+- Avoids deploying and maintaining a custom threat-analysis platform.
+
+### Business value
+
+- Reduces the operational burden of building threat detection from scratch.
+- Improves visibility into potential account or workload compromise.
+- Creates findings that can feed Security Hub, EventBridge, SNS, ticketing, and incident-response workflows.
+- Provides a scalable foundation for additional workload-protection capabilities.
+
+### Cost consideration
+
+GuardDuty is usage-based and may include trial periods for newly enabled protection plans. Runtime and malware protection capabilities will be enabled only when relevant workloads exist.
+
+## Centralized security posture management
+
+### Business requirement
+
+Security teams need a centralized mechanism to evaluate AWS resources against recognized security practices, prioritize weaknesses, and aggregate findings from AWS security services.
+
+### Decision
+
+AWS Security Hub CSPM was enabled through Terraform.
+
+The following security standards were explicitly subscribed:
+
+- AWS Foundational Security Best Practices v1.0.0
+- CIS AWS Foundations Benchmark v5.0.0
+
+Automatic default-standard selection was disabled so that Terraform explicitly controls the enabled standards and versions.
+
+Security Hub provides a centralized location for GuardDuty findings and security-control results.
+
+### Security value
+
+- Continuously evaluates the AWS account against security controls.
+- Centralizes findings from AWS security services.
+- Identifies configuration weaknesses and control failures.
+- Provides standardized severity and compliance information.
+- Creates a prioritized backlog for remediation.
+- Supports future EventBridge, SNS, ticketing, and SIEM integrations.
+
+### Business value
+
+- Reduces the need to review findings separately in multiple service consoles.
+- Improves visibility into cloud-security posture.
+- Provides measurable security and standards-compliance scores.
+- Helps security teams prioritize remediation work.
+- Produces evidence useful for governance and audit activities.
+
+### Operational consideration
+
+Security scores and control results are not immediate. Many resource-level controls depend on AWS Config and will become more complete after AWS Config is enabled.
