@@ -232,3 +232,23 @@ output "default_security_group_id" {
   description = "ID of the landing-zone default security group"
   value       = module.networking.default_security_group_id
 }
+
+output "security_alert_topic_arn" {
+  description = "SNS topic used for security notifications"
+  value       = module.security_alerting.security_alert_topic_arn
+}
+
+output "security_metric_filter_names" {
+  description = "CloudWatch security metric filters"
+  value       = module.cloudwatch_monitoring.metric_filter_names
+}
+
+output "security_alarm_names" {
+  description = "CloudWatch security alarms"
+  value       = module.cloudwatch_monitoring.alarm_names
+}
+
+output "cloudtrail_log_group_name" {
+  description = "CloudWatch log group receiving CloudTrail events"
+  value       = module.cloudtrail.cloudwatch_log_group_name
+}

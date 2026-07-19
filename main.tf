@@ -110,3 +110,18 @@ module "config_rules" {
     module.config
   ]
 }
+
+module "security_alerting" {
+  source = "./modules/security-alerting"
+
+  environment = var.environment
+  alert_email = var.security_alert_email
+}
+
+module "cloudwatch_monitoring" {
+  source = "./modules/cloudwatch-monitoring"
+
+  environment               = var.environment
+  cloudtrail_log_group_name = module.cloudtrail.cloudwatch_log_group_name
+  security_alert_topic_arn  = module.security_alerting.security_alert_topic_arn
+}

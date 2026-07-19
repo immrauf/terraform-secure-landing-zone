@@ -92,3 +92,9 @@ variable "config_retention_period_days" {
   type        = number
   default     = 90
 }
+
+variable "security_alert_email" {
+  description = "Email address used for security notifications"
+  type        = string
+  default     = ""
+}
