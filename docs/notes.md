@@ -121,3 +121,24 @@ I enabled AWS Security Hub CSPM and explicitly subscribed to two security standa
 - Security scores require time and completed control evaluations.
 - Many controls depend on AWS Config.
 - Terraform can explicitly manage standards and versions instead of relying on default subscriptions.
+
+## AWS Config milestone
+
+I enabled continuous AWS resource configuration recording with Terraform.
+
+### Components created
+
+- AWS Config service-linked role
+- Customer-managed configuration recorder
+- S3 delivery bucket
+- Delivery channel
+- Recorder status
+- Configuration history retention setting
+
+### Key lessons
+
+- Creating a configuration recorder does not automatically start it.
+- AWS Config requires a delivery channel before the recorder can start.
+- AWS Config records resource configurations rather than API calls.
+- CloudTrail records API activity, while AWS Config records resource state and changes.
+- Security Hub relies on AWS Config for many control findings.

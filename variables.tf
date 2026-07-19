@@ -80,3 +80,15 @@ variable "enable_security_hub_cis" {
   type        = bool
   default     = true
 }
+
+variable "config_snapshot_delivery_frequency" {
+  description = "Frequency at which AWS Config delivers configuration snapshots"
+  type        = string
+  default     = "TwentyFour_Hours"
+}
+
+variable "config_retention_period_days" {
+  description = "Number of days AWS Config retains configuration history"
+  type        = number
+  default     = 90
+}

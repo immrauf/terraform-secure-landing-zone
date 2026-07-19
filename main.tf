@@ -86,3 +86,16 @@ module "security_hub" {
     module.guardduty
   ]
 }
+
+module "config" {
+  source = "./modules/config"
+
+  environment                 = var.environment
+  aws_account_id              = data.aws_caller_identity.current.account_id
+  snapshot_delivery_frequency = var.config_snapshot_delivery_frequency
+  retention_period_days       = var.config_retention_period_days
+
+  depends_on = [
+    module.security_hub
+  ]
+}

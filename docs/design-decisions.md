@@ -367,3 +367,49 @@ Security Hub provides a centralized location for GuardDuty findings and security
 ### Operational consideration
 
 Security scores and control results are not immediate. Many resource-level controls depend on AWS Config and will become more complete after AWS Config is enabled.
+
+## Continuous AWS resource configuration recording
+
+### Business requirement
+
+Security, compliance, and operations teams need a historical record of AWS resource configurations and configuration changes.
+
+Security Hub CSPM also requires AWS Config resource recording for most resource-level security controls.
+
+### Decision
+
+AWS Config was enabled with a customer-managed configuration recorder using the AWS Config service-linked role.
+
+The recorder continuously records all supported resource types in the primary Region and includes supported global resource types.
+
+Configuration history and snapshots are delivered to a dedicated private S3 bucket with:
+
+- Public-access blocking
+- Bucket-owner-enforced object ownership
+- Versioning
+- Default server-side encryption
+- TLS-only access
+- Lifecycle-based retention
+
+Configuration snapshots are delivered every 24 hours. AWS Config historical information is retained for 90 days in the development environment.
+
+### Security value
+
+- Preserves a history of resource configuration changes.
+- Supports investigation of unauthorized or unexpected modifications.
+- Supplies resource data required by Security Hub controls.
+- Provides configuration timelines for audit and incident response.
+- Uses an AWS Config service-linked role rather than a manually overprivileged role.
+- Protects delivered configuration data from public access.
+
+### Business value
+
+- Reduces time required to determine when infrastructure changed.
+- Supports governance, compliance, and audit evidence.
+- Improves Security Hub control coverage.
+- Creates a searchable inventory of supported AWS resources.
+- Helps teams identify configuration drift and policy violations.
+
+### Cost consideration
+
+AWS Config charges are based partly on configuration items and rule evaluations. Continuous recording provides stronger visibility but may cost more than daily recording in environments with frequent changes.

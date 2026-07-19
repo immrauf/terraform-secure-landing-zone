@@ -187,3 +187,28 @@ output "security_hub_cis_subscription_arn" {
   description = "Subscription ARN for the CIS AWS Foundations Benchmark"
   value       = module.security_hub.cis_subscription_arn
 }
+
+output "config_configuration_recorder_name" {
+  description = "Name of the AWS Config configuration recorder"
+  value       = module.config.configuration_recorder_name
+}
+
+output "config_delivery_channel_name" {
+  description = "Name of the AWS Config delivery channel"
+  value       = module.config.delivery_channel_name
+}
+
+output "config_s3_bucket_name" {
+  description = "Name of the S3 bucket storing AWS Config data"
+  value       = module.config.config_bucket_name
+}
+
+output "config_service_role_arn" {
+  description = "ARN of the AWS Config service-linked role"
+  value       = module.config.config_role_arn
+}
+
+output "config_retention_period_days" {
+  description = "AWS Config historical information retention period"
+  value       = module.config.retention_period_days
+}
