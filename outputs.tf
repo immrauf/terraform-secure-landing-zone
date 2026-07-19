@@ -212,3 +212,18 @@ output "config_retention_period_days" {
   description = "AWS Config historical information retention period"
   value       = module.config.retention_period_days
 }
+
+output "config_rule_names" {
+  description = "Names of the AWS Config managed compliance rules"
+  value       = module.config_rules.rule_names
+}
+
+output "config_rule_arns" {
+  description = "ARNs of the AWS Config managed compliance rules"
+  value       = module.config_rules.rule_arns
+}
+
+output "config_rule_count" {
+  description = "Number of AWS Config managed compliance rules"
+  value       = module.config_rules.rule_count
+}

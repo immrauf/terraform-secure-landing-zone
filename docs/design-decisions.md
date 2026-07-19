@@ -413,3 +413,43 @@ Configuration snapshots are delivered every 24 hours. AWS Config historical info
 ### Cost consideration
 
 AWS Config charges are based partly on configuration items and rule evaluations. Continuous recording provides stronger visibility but may cost more than daily recording in environments with frequent changes.
+
+## AWS Config managed compliance baseline
+
+### Requirement
+
+The landing zone requires continuous evaluation of important AWS security configurations, not only historical configuration recording.
+
+### Decision
+
+AWS Config managed rules were deployed with Terraform to evaluate:
+
+- S3 public read and write access
+- S3 server-side encryption
+- S3 encrypted transport
+- EBS volume encryption
+- EC2 public IP exposure
+- Unrestricted inbound SSH
+- Default security group configuration
+- CloudTrail availability
+- Customer-managed KMS key rotation
+
+The rules are defined through a Terraform map and created with `for_each`. This makes the compliance baseline consistent, scalable, and easy to extend.
+
+### Security value
+
+- Detects publicly accessible storage.
+- Identifies unencrypted storage resources.
+- Detects exposed EC2 instances and unrestricted SSH access.
+- Ensures CloudTrail remains available.
+- Evaluates customer-managed KMS key rotation.
+- Provides resource-level compliance evidence.
+- Establishes a baseline for automated remediation.
+
+### Operational value
+
+The centralized rule map reduces duplicated Terraform code and permits new controls to be added through a single standardized structure.
+
+### Expected results
+
+Some rules may initially return `NON_COMPLIANT` or `INSUFFICIENT_DATA`. A noncompliant result confirms that the detective control is functioning and identifies work for the remediation phase.

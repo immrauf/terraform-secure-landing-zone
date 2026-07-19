@@ -99,3 +99,14 @@ module "config" {
     module.security_hub
   ]
 }
+
+module "config_rules" {
+  source = "./modules/config-rules"
+
+  environment      = var.environment
+  rule_name_prefix = "secure-landing-zone"
+
+  depends_on = [
+    module.config
+  ]
+}
