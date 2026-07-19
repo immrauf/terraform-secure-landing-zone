@@ -109,3 +109,8 @@ output "private_db_subnet_cidrs" {
   description = "CIDR blocks assigned to private database subnets"
   value       = values(local.private_db_subnets)[*].cidr
 }
+
+output "default_security_group_id" {
+  description = "ID of the VPC default security group managed as deny-all"
+  value       = aws_default_security_group.default.id
+}

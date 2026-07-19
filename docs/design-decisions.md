@@ -453,3 +453,37 @@ The centralized rule map reduces duplicated Terraform code and permits new contr
 ### Expected results
 
 Some rules may initially return `NON_COMPLIANT` or `INSUFFICIENT_DATA`. A noncompliant result confirms that the detective control is functioning and identifies work for the remediation phase.
+
+## Compliance remediation and infrastructure hardening
+
+### Requirement
+
+AWS Config identified resources that did not meet the landing zone's continuous compliance baseline. These findings required controlled remediation through infrastructure as code.
+
+### Decision
+
+Noncompliant resources were investigated using AWS Config evaluation details. Remediation was implemented through Terraform instead of permanent manual console changes.
+
+The remediation baseline includes:
+
+- Removing all rules from the VPC default security group
+- Rejecting non-TLS access to S3 buckets
+- Enforcing default S3 encryption
+- Enabling automatic rotation for customer-managed KMS keys
+- Preventing unrestricted inbound SSH
+- Preventing public IPv4 assignment to workload instances
+- Enabling EBS encryption by default
+- Confirming CloudTrail multi-Region logging and log validation
+
+### Security value
+
+- Reduces accidental network exposure
+- Protects data in transit and at rest
+- Strengthens cryptographic key management
+- Prevents workload dependence on permissive default resources
+- Provides repeatable correction of configuration drift
+- Connects detective controls with preventive infrastructure changes
+
+### Operational principle
+
+AWS Config findings are treated as actionable evidence rather than deployment errors. Every finding is investigated to identify the affected resource, its owner, and the safest Terraform-managed correction.

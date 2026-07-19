@@ -227,3 +227,8 @@ output "config_rule_count" {
   description = "Number of AWS Config managed compliance rules"
   value       = module.config_rules.rule_count
 }
+
+output "default_security_group_id" {
+  description = "ID of the landing-zone default security group"
+  value       = module.networking.default_security_group_id
+}

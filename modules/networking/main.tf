@@ -190,3 +190,14 @@ resource "aws_db_subnet_group" "main" {
     Tier = "private-db"
   }
 }
+
+resource "aws_default_security_group" "default" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name        = "secure-landing-zone-${var.environment}-default-sg"
+    Environment = var.environment
+    ManagedBy   = "Terraform"
+    Purpose     = "deny-all-default-security-group"
+  }
+}
