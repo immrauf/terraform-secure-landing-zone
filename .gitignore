@@ -28,3 +28,18 @@ crash.*.log
 .DS_Store
 Thumbs.db
 .vscode/
+
+# Python virtual environment
+.checkov-venv/
+
+# Local security scan reports
+checkov-report.txt
+trivy-report.txt
+trivy-report.json
+
+# Terraform local files
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
