@@ -125,3 +125,17 @@ module "cloudwatch_monitoring" {
   cloudtrail_log_group_name = module.cloudtrail.cloudwatch_log_group_name
   security_alert_topic_arn  = module.security_alerting.security_alert_topic_arn
 }
+
+module "iam_security" {
+  source = "./modules/iam-security"
+
+  environment           = var.environment
+  trusted_principal_arn = var.trusted_principal_arn
+}
+
+module "secrets_manager" {
+  source = "./modules/secrets-manager"
+
+  environment = var.environment
+  kms_key_arn = module.kms.key_arn
+}

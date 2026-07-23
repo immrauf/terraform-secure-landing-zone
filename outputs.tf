@@ -252,3 +252,28 @@ output "cloudtrail_log_group_name" {
   description = "CloudWatch log group receiving CloudTrail events"
   value       = module.cloudtrail.cloudwatch_log_group_name
 }
+
+output "access_analyzer_name" {
+  description = "IAM Access Analyzer name"
+  value       = module.iam_security.access_analyzer_name
+}
+
+output "break_glass_role_arn" {
+  description = "Emergency administrative role ARN"
+  value       = module.iam_security.break_glass_role_arn
+}
+
+output "application_secret_name" {
+  description = "Name of the example application secret"
+  value       = module.secrets_manager.secret_name
+}
+
+output "application_secret_arn" {
+  description = "ARN of the example application secret"
+  value       = module.secrets_manager.secret_arn
+}
+
+output "secret_read_policy_arn" {
+  description = "ARN of the application secret-read IAM policy"
+  value       = module.secrets_manager.secret_read_policy_arn
+}

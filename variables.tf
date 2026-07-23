@@ -98,3 +98,9 @@ variable "security_alert_email" {
   type        = string
   default     = ""
 }
+
+variable "trusted_principal_arn" {
+  description = "IAM principal allowed to assume the emergency access role"
+  type        = string
+  default     = ""
+}
